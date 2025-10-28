@@ -4,8 +4,6 @@
 *.pyd
 *.sqlite3
 venv/
-.env/
-*.env
 .vscode/
 .idea/
 *.swp
