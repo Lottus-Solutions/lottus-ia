@@ -36,7 +36,7 @@ class Banco:
                     al.nome AS aluno, 
                     ag.data_emprestimo, 
                     ag.data_devolucao_prevista
-                FROM agendamento ag
+                FROM emprestimo ag
                 JOIN livro l ON l.id = ag.livro_id
                 JOIN aluno al ON al.matricula = ag.aluno_id
                 WHERE ag.status_emprestimo = 'ATIVO'
@@ -50,7 +50,7 @@ class Banco:
                     al.nome AS aluno,
                     ag.dias_atrasados,
                     ag.data_devolucao_prevista
-                FROM agendamento ag
+                FROM emprestimo ag
                 JOIN livro l ON l.id = ag.livro_id
                 JOIN aluno al ON al.matricula = ag.aluno_id
                 WHERE ag.status_emprestimo = 'ATRASADO'
@@ -63,7 +63,7 @@ class Banco:
                     l.nome AS livro, 
                     al.nome AS aluno, 
                     ag.data_devolucao_prevista
-                FROM agendamento ag
+                FROM emprestimo ag
                 JOIN livro l ON l.id = ag.livro_id
                 JOIN aluno al ON al.matricula = ag.aluno_id
                 WHERE ag.status_emprestimo = 'ATIVO' 
@@ -77,7 +77,7 @@ class Banco:
                     l.nome AS livro, 
                     al.nome AS aluno, 
                     ag.data_devolucao_prevista
-                FROM agendamento ag
+                FROM emprestimo ag
                 JOIN livro l ON l.id = ag.livro_id
                 JOIN aluno al ON al.matricula = ag.aluno_id
                 WHERE ag.status_emprestimo = 'ATIVO'
@@ -91,7 +91,7 @@ class Banco:
                     l.nome AS livro, 
                     al.nome AS aluno, 
                     ag.data_devolucao_prevista
-                FROM agendamento ag
+                FROM emprestimo ag
                 JOIN livro l ON l.id = ag.livro_id
                 JOIN aluno al ON al.matricula = ag.aluno_id
                 WHERE ag.status_emprestimo = 'ATIVO'
@@ -116,7 +116,7 @@ class Banco:
                     l.nome AS livro,
                     c.nome AS categoria,
                     COUNT(*) AS total_emprestimos
-                FROM agendamento ag
+                FROM emprestimo ag
                 JOIN livro l ON l.id = ag.livro_id
                 JOIN categoria c ON c.id = l.fk_categoria
                 WHERE ag.data_emprestimo >= DATE_SUB(CURRENT_DATE, INTERVAL 6 MONTH)
@@ -137,7 +137,7 @@ class Banco:
                     COUNT(al.matricula) AS alunos_sem_livros_retirados
                 FROM aluno al
                 JOIN turma t ON t.id = al.fk_turma
-                LEFT JOIN agendamento a 
+                LEFT JOIN emprestimo a 
                     ON a.aluno_id = al.matricula 
                     AND a.status_emprestimo = 'ATIVO'
                 WHERE a.id IS NULL
@@ -151,7 +151,7 @@ class Banco:
                     COUNT(*) AS total_atrasos,
                     MAX(a.dias_atrasados) AS maior_atraso,
                     SUM(a.dias_atrasados) AS total_dias_atrasados
-                FROM agendamento a
+                FROM emprestimo a
                 JOIN aluno al ON al.matricula = a.aluno_id
                 JOIN turma t ON t.id = al.fk_turma
                 WHERE a.status_emprestimo = 'ATRASADO'
@@ -178,7 +178,7 @@ class Banco:
                     l.nome AS livro,
                     a.data_devolucao_prevista,
                     a.dias_atrasados
-                FROM agendamento a
+                FROM emprestimo a
                 JOIN aluno al ON al.matricula = a.aluno_id
                 JOIN turma t ON t.id = al.fk_turma
                 JOIN livro l ON l.id = a.livro_id
@@ -190,7 +190,7 @@ class Banco:
                 SELECT 
                     c.nome AS categoria, 
                     COUNT(*) AS total_emprestimos
-                FROM agendamento a
+                FROM emprestimo a
                 JOIN livro l ON l.id = a.livro_id
                 JOIN categoria c ON c.id = l.fk_categoria
                 WHERE a.status_emprestimo IN ('FINALIZADO', 'ATIVO', 'ATRASADO')
@@ -202,7 +202,7 @@ class Banco:
                 SELECT 
                     c.nome AS categoria, 
                     COUNT(*) AS total_emprestimos
-                FROM agendamento a
+                FROM emprestimo a
                 JOIN livro l ON l.id = a.livro_id
                 JOIN categoria c ON c.id = l.fk_categoria
                 WHERE a.status_emprestimo IN ('FINALIZADO', 'ATIVO', 'ATRASADO')
@@ -228,7 +228,7 @@ class Banco:
                     COUNT(CASE 
                         WHEN a.data_emprestimo > DATE_SUB(CURRENT_DATE, INTERVAL 6 MONTH)
                         THEN 1 END) AS emprestimos_ultimo_semestre
-                FROM agendamento a
+                FROM emprestimo a
                 JOIN livro l ON l.id = a.livro_id
                 JOIN categoria c ON c.id = l.fk_categoria
                 GROUP BY c.nome
