@@ -11,7 +11,7 @@ CORS(app)
 assistente = AssistenteIA()
 
 
-@app.route("/perguntar", methods=["POST"])
+@app.route("/ia/perguntar", methods=["POST"])
 def perguntar():
     """Endpoint principal para perguntas ao assistente."""
     try:
@@ -33,7 +33,7 @@ def perguntar():
         return jsonify({"erro": "Erro interno ao processar a pergunta."}), 500
 
 
-@app.route("/", methods=["GET"])
+@app.route("/ia", methods=["GET"])
 def health_check():
     """Rota simples de status."""
     return jsonify({"status": "ok", "mensagem": "Assistente IA rodando 🚀"}), 200
